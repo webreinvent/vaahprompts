@@ -20,7 +20,10 @@ At the start of every response, display the current status of all phases using t
 ┌─────────────────────────────────────────────────┐
 │ Phase 1: Initial Requirements Gathering  → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
 │ Phase 2: Iterative Research & Deep Dive  → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
-│ Phase 3: Documentation Generation        → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Phase 3: Gap Analysis                    → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Phase 4: Present Project Requirements    → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Phase 5: Documentation Generation        → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Phase 6: Update AI Memory                → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -101,9 +104,70 @@ After collecting initial answers, perform the following loop:
 
 5. **Confirm with User:** Before exiting the loop, present a consolidated summary of all gathered requirements and ask the user to confirm or correct anything.
 
-## Phase 3: Documentation Generation
+## Phase 3: Gap Analysis
 
-Once requirements are confirmed, generate documentation at the user's specified `<project-root-folder>/docs/` path. Always generate the **core files** listed below. Then, based on what was determined relevant during Phase 2, also generate applicable **additional files** from the conditional table.
+After Phase 2 research is complete, perform a structured gap analysis before generating documentation.
+
+1. **Identify Gaps:** Review all collected information and identify areas that are:
+   - Undefined or vague (e.g., "users can manage data" — what data? what actions?)
+   - Contradictory (e.g., "simple app" but with 20+ integrations)
+   - Missing entirely (e.g., no mention of error handling, edge cases, or offline behavior)
+   - Assumed but not confirmed (e.g., implicit auth requirements)
+
+2. **Present Gap Report:** Share a structured gap report with the user organized by category:
+   - **Critical Gaps** — blockers that prevent documentation generation (must be resolved)
+   - **Important Gaps** — significantly affect architecture or feature design
+   - **Minor Gaps** — nice-to-know details that can be deferred but are worth surfacing
+
+3. **Recommendations:** For each gap, provide:
+   - A clear description of what is missing or unclear
+   - Why it matters (impact on development if left unresolved)
+   - A recommended default or suggested answer the user can accept or modify
+
+4. **Resolve Gaps:** Ask the user to address critical and important gaps. For minor gaps, present your recommended defaults and let the user accept or override.
+
+5. **Final Confirmation:** Get explicit user confirmation that all gaps have been addressed before proceeding to Phase 4.
+
+## Phase 4: Present Project Requirements
+
+After all gaps are resolved, compile and present the final, consolidated version of the project requirements for user approval.
+
+1. **Project Overview:** Present the finalized:
+   - Project name and description
+   - Primary objective and problem statement
+   - Target audience
+   - Expected scale
+
+2. **Tech Stack:** Present the confirmed tech stack with brief justification for each choice. Highlight any deviations from the default stack and why.
+
+3. **Feature List:** Present a prioritized, numbered list of all features:
+   - Grouped by priority (Critical → High → Medium → Low)
+   - Each feature with: name, one-line description, target phase (MVP / Enhancement / Scale / Growth)
+   - Clearly mark which features are in MVP scope
+
+4. **Architecture Summary:** High-level overview of:
+   - System components and how they interact
+   - Key architectural decisions and patterns
+   - Third-party services and integrations
+
+5. **Constraints & Decisions:** Summarize all hard constraints, key decisions made during research and gap analysis, and any trade-offs accepted.
+
+6. **Conditional Docs Preview:** List which conditional documentation files will be generated and why.
+
+7. **User Approval:** Ask the user to review and explicitly approve the presented requirements. If the user requests changes, incorporate them and re-present. Do **not** proceed to Phase 5 until the user confirms approval.
+
+## Phase 5: Documentation Generation
+
+Once the final requirements are approved in Phase 4, generate documentation at the user's specified `<project-root-folder>/docs/` path. Always generate the **core files** listed below. Then, based on what was determined relevant during Phase 2, Phase 3, and confirmed in Phase 4, also generate applicable **additional files** from the conditional table.
+
+### Prioritization Rules:
+- **MVP first:** All documentation must clearly distinguish MVP-scope features from future enhancements.
+- **Important over nice-to-have:** Features critical to core functionality must be prioritized higher than good-to-have features. Use the following priority order:
+  1. **Critical** — app cannot function without this (must be in MVP)
+  2. **High** — important for usable product (should be in MVP if feasible)
+  3. **Medium** — enhances experience but not essential for launch
+  4. **Low** — nice-to-have, can be deferred to later phases
+- Feature files, roadmap, and architecture must all reflect this prioritization consistently.
 
 ### Core Files (always generated):
 
@@ -202,7 +266,7 @@ Each feature file must include:
 
 ---
 
-### Conditional Files (generate only if determined relevant during Phase 2):
+### Conditional Files (generate only if determined relevant and confirmed in Phase 4):
 
 | File | When to Generate |
 |------|-----------------|
@@ -234,3 +298,27 @@ Each feature file must include:
 - Keep language clear, concise, and actionable — avoid vague statements.
 - Feature files must be numbered sequentially: `feature-001-`, `feature-002-`, etc.
 - The roadmap must always prioritize MVP as Phase 1.
+
+## Phase 6: Update AI Memory
+
+After all documentation is generated, persist key project context so that future AI conversations retain awareness of this project.
+
+1. **Save to Memory:** Store the following information in AI memory:
+   - Project name
+   - Project root folder path
+   - Documentation folder path (`<project-root-folder>/docs/`)
+   - Tech stack chosen
+   - Brief project description (1-2 sentences)
+   - List of all generated documentation files
+   - Key architectural decisions made
+   - MVP scope summary
+   - Any constraints or hard requirements
+   - Current phase of development (e.g., "Documentation complete, ready for MVP development")
+
+2. **Confirm Memory Update:** Inform the user that project context has been saved to AI memory and summarize what was stored.
+
+3. **Next Steps:** Suggest the logical next actions the user can take, such as:
+   - Begin MVP development based on the roadmap
+   - Review and refine individual feature docs
+   - Share documentation with the team for feedback
+   - Use the feature files as input for task/ticket creation

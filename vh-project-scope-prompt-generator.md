@@ -204,43 +204,64 @@ Using all gathered information, generate the project-specific scope initializati
 
 > **Important:** In the generated prompt file, replace **all** path references with the actual resolved `{project_root}` value. For example, if `{project_root}` is `/Volumes/Data/Projects/webreinvent-learn`, then paths in the generated prompt should read `/Volumes/Data/Projects/webreinvent-learn/docs/`, not `<project-root-folder>/docs/`.
 
+### Generated Prompt Design Principles
+
+The generated `prompt-project-scope-init.md` must follow these principles:
+
+1. **Folder references only** — Reference important **folders** the AI must read and analyse. Never list specific file names, as files can change over time. For example, reference `{project_root}/docs/features/` not individual feature files.
+2. **Basic overview only** — Provide a concise project overview (name, description, tech stack summary, user roles, key decisions, constraints). Keep it brief — just enough for the AI to understand the project identity.
+3. **Direct to folders for depth** — The prompt should direct the AI to read the relevant folders for detailed understanding rather than duplicating that information in the prompt itself.
+
 ### Generated Prompt Structure
 
 The generated prompt MUST include the following sections:
 
 #### Section 1: Role & Objective
-- Define the AI's role as a project-aware development assistant
+- Define the AI's role as a project-aware development assistant for this specific project
 - State the objective: understand project scope, validate alignment, identify gaps, and assist development
 
-#### Section 2: Project Context
-- Project name, description, objectives (extracted from docs)
-- Target audience and user roles
-- Tech stack with versions
-- Key architectural decisions
-- Constraints and hard requirements
+#### Section 2: Project Overview (Brief)
+- Project name and one-line description
+- Primary objective (2–3 sentences max)
+- Target audience and user roles (table)
+- Tech stack summary (table — technology + version, no justifications)
+- Key architectural decisions (concise bullet list)
+- Hard constraints (concise bullet list)
 
-#### Section 3: Analysis Instructions
-The generated prompt must instruct the AI to perform these analyses when used:
+> **Note:** This section provides just enough context for the AI to understand the project identity. For detailed architecture, features, data models, security, deployment, etc. — the AI is directed to read the relevant folders in Section 3.
+
+#### Section 3: Key Folders to Analyse
+
+List only the **important folders** the AI must read and analyse, with a brief description of what each folder contains and why the AI should read it. Do not list individual files.
+
+| Folder | Purpose | What to Learn |
+|--------|---------|---------------|
+| `{project_root}/docs/` | Project documentation | Full project scope — architecture, features, roadmap, data models, security, integrations, testing, deployment, glossary |
+| `{project_root}/ai-milestones-and-tasks/` | Progress tracking | Current development status — completed, in-progress, and pending tasks; blockers; deviations from roadmap |
+| `{project_root}/ai-prompts/` | AI prompt files | Other AI prompts used in the project; understand the AI workflow |
+| `{project_root}/` (root) | Codebase | Actual source code — scan to understand what is implemented vs. planned; check dependency files, configs, and project structure |
+
+#### Section 4: Analysis Instructions
+
+The generated prompt must instruct the AI to perform these steps sequentially:
 
 1. **Analyse `{project_root}/docs/` folder**
-   - Read all documentation files
-   - Build a mental model of the project scope
-   - Understand feature priorities, phases, and dependencies
+   - Read all files and subfolders within docs
+   - Build a mental model of the project scope, features, architecture, and conventions
 
 2. **Search tech stack official documentation**
-   - Look up official docs for each technology in the stack
-   - Learn current best practices and patterns
-   - Check for version-specific guidance
+   - For each technology listed in the tech stack, look up official docs
+   - Learn current best practices, version-specific guidance, and compatibility notes
 
-3. **Analyse current codebase**
-   - Scan all source code directories
-   - Map implemented features to documentation
-   - Assess code quality and adherence to documented patterns
+3. **Analyse current codebase at `{project_root}/`**
+   - Scan source code directories to understand implementation status
+   - Map implemented code to documented features
+   - Assess adherence to documented patterns and conventions
 
 4. **Analyse `{project_root}/ai-milestones-and-tasks/` folder**
-   - Read all milestone and task tracking files
-   - Understand current development progress
+   - Read all files to understand current development progress
    - Identify completed, in-progress, and pending work
+   - Note blockers or deferred items
 
 5. **Learn from all information and analysis**
    - Synthesize documentation, code, and progress data
@@ -253,30 +274,31 @@ The generated prompt must instruct the AI to perform these analyses when used:
    - Provide a recommended answer/action for each question
    - Categorize as Critical / Important / Minor
 
-7. **Update required files**
+7. **Update required files in `{project_root}/docs/` and `{project_root}/ai-milestones-and-tasks/`**
    - Update docs that are outdated or inconsistent
    - Update milestone/task files to reflect current status
    - Create missing documentation where needed
+   - Always ask before making significant changes
 
 8. **Update AI memory**
    - Store project context, current status, and key decisions
    - Save tech stack, architecture, and conventions
    - Record current phase and progress
 
-#### Section 4: Phase Status Tracker
-- Include a phase tracker in the generated prompt for the AI to display progress
+#### Section 5: Phase Status Tracker
+- Include a phase tracker in the generated prompt for the AI to display progress across all 8 analysis steps
 
-#### Section 5: Output Format
+#### Section 6: Output Format
 - Specify Markdown formatting rules
-- Define gap report structure
+- Define gap report structure (severity, description, question, recommendation)
 - Define update confirmation format
 
-#### Section 6: Rules & Constraints
-- Never make assumptions without verification
+#### Section 7: Rules & Constraints
+- Never make assumptions without verification — read the folders first
 - Always ask before making significant changes
 - Prioritize MVP features over future-phase features
 - Follow existing code conventions and patterns
-- Cross-reference all changes against documentation
+- Cross-reference all changes against documentation in `{project_root}/docs/`
 
 ---
 

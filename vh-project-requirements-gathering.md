@@ -12,27 +12,27 @@ This prompt is used at the very beginning of a new software project — before a
 
 # Task
 
-## Phase Status Tracker
+## Step Status Tracker
 
-At the start of every response, display the current status of all phases using the format below. Update the statuses as work progresses.
+At the start of every response, display the current status of all steps using the format below. Update the statuses as work progresses.
 
 ```
 ┌─────────────────────────────────────────────────┐
-│ Phase 1: Initial Requirements Gathering  → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
-│ Phase 2: Iterative Research & Deep Dive  → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
-│ Phase 3: Gap Analysis                    → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
-│ Phase 4: Present Project Requirements    → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
-│ Phase 5: Documentation Generation        → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
-│ Phase 6: Update AI Memory                → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Step 1: Initial Requirements Gathering   → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Step 2: Iterative Research & Deep Dive   → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Step 3: Gap Analysis                     → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Step 4: Present Project Requirements     → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Step 5: Documentation Generation         → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
+│ Step 6: Update AI Memory                 → ⬜ Not Started / 🔄 In Progress / ✅ Completed │
 └─────────────────────────────────────────────────┘
 ```
 
 **Rules:**
-- Only one phase can be **In Progress** at a time.
-- A phase is marked **Completed** only when all its steps are fully done.
+- Only one step can be **In Progress** at a time.
+- A step is marked **Completed** only when all its sub-steps are fully done.
 - Always show this tracker at the **top of every response** so the user can see progress at a glance.
 
-## Phase 1: Initial Requirements Gathering
+## Step 1: Initial Requirements Gathering
 
 Ask the user the following foundational questions, one group at a time. Wait for responses before proceeding.
 
@@ -62,7 +62,7 @@ Ask the user the following foundational questions, one group at a time. Wait for
 >
 > Present 2-3 suitable tech stack options with clear justifications for each choice, highlighting the pros and cons. Let the user choose or provide guidance on which factors should drive the decision.
 
-## Phase 2: Iterative Research & Deep Dive
+## Step 2: Iterative Research & Deep Dive
 
 After collecting initial answers, perform the following loop:
 
@@ -106,9 +106,9 @@ After collecting initial answers, perform the following loop:
 
 5. **Confirm with User:** Before exiting the loop, present a consolidated summary of all gathered requirements and ask the user to confirm or correct anything.
 
-## Phase 3: Gap Analysis
+## Step 3: Gap Analysis
 
-After Phase 2 research is complete, perform a structured gap analysis before generating documentation.
+After Step 2 research is complete, perform a structured gap analysis before generating documentation.
 
 1. **Identify Gaps:** Review all collected information and identify areas that are:
    - Undefined or vague (e.g., "users can manage data" — what data? what actions?)
@@ -128,9 +128,9 @@ After Phase 2 research is complete, perform a structured gap analysis before gen
 
 4. **Resolve Gaps:** Ask the user to address critical and important gaps. For minor gaps, present your recommended defaults and let the user accept or override.
 
-5. **Final Confirmation:** Get explicit user confirmation that all gaps have been addressed before proceeding to Phase 4.
+5. **Final Confirmation:** Get explicit user confirmation that all gaps have been addressed before proceeding to Step 4.
 
-## Phase 4: Present Project Requirements
+## Step 4: Present Project Requirements
 
 After all gaps are resolved, compile and present the final, consolidated version of the project requirements for user approval.
 
@@ -144,7 +144,7 @@ After all gaps are resolved, compile and present the final, consolidated version
 
 3. **Feature List:** Present a prioritized, numbered list of all features:
    - Grouped by priority (Critical → High → Medium → Low)
-   - Each feature with: name, one-line description, target phase (MVP / Enhancement / Scale / Growth)
+   - Each feature with: name, one-line description, target milestone (MVP / Enhancement / Scale / Growth)
    - Clearly mark which features are in MVP scope
 
 4. **Architecture Summary:** High-level overview of:
@@ -156,11 +156,11 @@ After all gaps are resolved, compile and present the final, consolidated version
 
 6. **Conditional Docs Preview:** List which conditional documentation files will be generated and why.
 
-7. **User Approval:** Ask the user to review and explicitly approve the presented requirements. If the user requests changes, incorporate them and re-present. Do **not** proceed to Phase 5 until the user confirms approval.
+7. **User Approval:** Ask the user to review and explicitly approve the presented requirements. If the user requests changes, incorporate them and re-present. Do **not** proceed to Step 5 until the user confirms approval.
 
-## Phase 5: Documentation Generation
+## Step 5: Documentation Generation
 
-Once the final requirements are approved in Phase 4, generate documentation at the user's specified `<project-root-folder>/docs/` path. Always generate the **core files** listed below. Then, based on what was determined relevant during Phase 2, Phase 3, and confirmed in Phase 4, also generate applicable **additional files** from the conditional table.
+Once the final requirements are approved in Step 4, generate documentation at the user's specified `<project-root-folder>/docs/` path. Always generate the **core files** listed below. Then, based on what was determined relevant during Step 2, Step 3, and confirmed in Step 4, also generate applicable **additional files** from the conditional table.
 
 ### Prioritization Rules:
 - **MVP first:** All documentation must clearly distinguish MVP-scope features from future enhancements.
@@ -168,7 +168,7 @@ Once the final requirements are approved in Phase 4, generate documentation at t
   1. **Critical** — app cannot function without this (must be in MVP)
   2. **High** — important for usable product (should be in MVP if feasible)
   3. **Medium** — enhances experience but not essential for launch
-  4. **Low** — nice-to-have, can be deferred to later phases
+  4. **Low** — nice-to-have, can be deferred to later milestones
 - Feature files, roadmap, and architecture must all reflect this prioritization consistently.
 
 ### Core Files (always generated):
@@ -224,15 +224,15 @@ Once the final requirements are approved in Phase 4, generate documentation at t
 ---
 
 #### `roadmap.md`
-- Development phases with clear milestones
-- **Phase 1: MVP** — core features only, minimal viable scope
-- **Phase 2: Enhancement** — improved UX, additional features
-- **Phase 3: Scale** — performance optimization, advanced features
-- **Phase 4: Growth** — analytics, marketing tools, ecosystem expansion
-- Estimated timeline per phase (relative, e.g., "2-3 weeks")
-- Dependencies between phases
-- Risk assessment per phase
-- Definition of done for each phase
+- Development milestones with clear task breakdown
+- **Milestone 1: MVP** — core features only, minimal viable scope
+- **Milestone 2: Enhancement** — improved UX, additional features
+- **Milestone 3: Scale** — performance optimization, advanced features
+- **Milestone 4: Growth** — analytics, marketing tools, ecosystem expansion
+- Estimated timeline per milestone (relative, e.g., "2-3 weeks")
+- Dependencies between milestones
+- Risk assessment per milestone
+- Definition of done for each milestone
 
 ---
 
@@ -246,7 +246,7 @@ Each feature file must include:
 - Dependencies on other features
 - Technical notes / implementation hints
 - Estimated effort: Small / Medium / Large / XL
-- Target phase (MVP / Enhancement / Scale / Growth)
+- Target milestone (MVP / Enhancement / Scale / Growth)
 
 ---
 
@@ -269,7 +269,7 @@ Each feature file must include:
 
 ---
 
-### Conditional Files (generate only if determined relevant and confirmed in Phase 4):
+### Conditional Files (generate only if determined relevant and confirmed in Step 4):
 
 | File | When to Generate |
 |------|-----------------|
@@ -300,9 +300,9 @@ Each feature file must include:
 - Cross-reference other documents using relative links (e.g., `[Architecture](./architecture.md)`).
 - Keep language clear, concise, and actionable — avoid vague statements.
 - Feature files must be numbered sequentially: `feature-001-`, `feature-002-`, etc.
-- The roadmap must always prioritize MVP as Phase 1.
+- The roadmap must always prioritize MVP as Milestone 1.
 
-## Phase 6: Update AI Memory
+## Step 6: Update AI Memory
 
 After all documentation is generated, persist key project context so that future AI conversations retain awareness of this project.
 
@@ -316,7 +316,7 @@ After all documentation is generated, persist key project context so that future
    - Key architectural decisions made
    - MVP scope summary
    - Any constraints or hard requirements
-   - Current phase of development (e.g., "Documentation complete, ready for MVP development")
+   - Current milestone of development (e.g., "Documentation complete, ready for MVP development")
 
 2. **Confirm Memory Update:** Inform the user that project context has been saved to AI memory and summarize what was stored.
 

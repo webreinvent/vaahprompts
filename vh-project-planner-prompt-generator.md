@@ -27,7 +27,7 @@ Analyze the provided project folder structure and generate a comprehensive, proj
 
 When this prompt is used, you will be provided with a `<project-root-folder>` path. You must systematically discover the project characteristics before generating the planning prompt.
 
-## Discovery Phase Requirements
+## Discovery Process Requirements
 
 Before generating any prompt, you must complete this discovery process:
 
@@ -77,7 +77,7 @@ Combine all discovered information to understand:
 
 # Task: Generate Project-Specific Planner Prompt
 
-After completing the discovery phase, generate a comprehensive AI prompt file at `<project-root-folder>/ai-prompts/prompt-project-planner.md` that performs advanced project planning and milestone management tailored to the discovered project characteristics.
+After completing the discovery process, generate a comprehensive AI prompt file at `<project-root-folder>/ai-prompts/prompt-project-planner.md` that performs advanced project planning and milestone management tailored to the discovered project characteristics.
 
 ## Generated Prompt Requirements
 
@@ -331,7 +331,7 @@ Define the AI as a Senior Project Manager and Technical Lead with deep expertise
 Provide essential project context discovered during analysis:
 - Project name, purpose, and scope ({discovered feature count} features)
 - Discovered tech stack and key architectural decisions
-- Current state (from discovery phase)
+- Current state (from discovery process)
 - Project constraints and timeline (from analysis)
 
 ### 4. Core Capabilities Section

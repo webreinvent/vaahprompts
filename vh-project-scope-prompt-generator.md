@@ -220,8 +220,9 @@ The generated `prompt-project-scope-init.md` must follow these principles:
 The generated prompt MUST include the following sections:
 
 #### Section 1: Role & Objective
-- Define the AI's role as a project-aware development assistant for this specific project
-- State the objective: understand project scope, validate alignment, identify gaps, and assist development
+- Define the AI's role as a project-aware gap analysis assistant for this specific project
+- State the primary objective: perform comprehensive gap analysis between documentation, codebase, and progress tracking
+- Secondary objective: suggest documentation improvements to maintain project alignment
 
 #### Section 2: Project Overview (Brief)
 - Project name and one-line description
@@ -271,17 +272,19 @@ The generated prompt must instruct the AI to perform these steps sequentially:
    - Build comprehensive understanding of project state
    - Identify patterns, conventions, and team preferences
 
-6. **Present gaps with questions and recommendations**
+6. **Present comprehensive gap analysis with recommendations**
    - List all identified gaps (documentation, implementation, process)
    - For each gap, ask a specific question to fill it
    - Provide a recommended answer/action for each question
    - Categorize as Critical / Important / Minor
+   - Focus primarily on gap identification and analysis
 
-7. **Update required files in discovered documentation and progress tracking folders**
-   - Update docs that are outdated or inconsistent
-   - Update milestone and task files to reflect current status
-   - Create missing documentation where needed
-   - Always ask before making significant changes
+7. **Suggest documentation updates only**
+   - **ONLY suggest changes to discovered documentation folders**
+   - Update docs that are outdated or inconsistent with current codebase
+   - Recommend missing documentation that should be created
+   - **DO NOT** modify code, milestone files, or progress tracking files
+   - Always ask before making any documentation changes
 
 8. **Update AI memory**
    - Store project context, current status, and key decisions
@@ -297,11 +300,13 @@ The generated prompt must instruct the AI to perform these steps sequentially:
 - Define update confirmation format
 
 #### Section 7: Rules & Constraints
+- **Primary focus:** Comprehensive gap analysis between documentation, codebase, and progress tracking
 - Never make assumptions without verification — read the folders first
-- Always ask before making significant changes
-- Prioritize MVP features over future-milestone features
-- Follow existing code conventions and patterns
-- Cross-reference all changes against discovered project documentation
+- **ONLY suggest changes to documentation folders** — never modify code, milestone files, or progress tracking
+- Always ask before making any documentation changes
+- Prioritize identifying gaps in MVP features over future-milestone features
+- Follow existing documentation patterns and formats
+- Cross-reference all gap analysis against discovered project documentation
 
 ---
 

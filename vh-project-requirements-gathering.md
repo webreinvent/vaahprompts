@@ -50,16 +50,17 @@ Ask the user the following foundational questions, one group at a time. Wait for
 7. What is the **expected scale**? (number of users, data volume, geographic reach)
 8. Are there any **existing systems** this needs to integrate with?
 9. Are there any **hard constraints**? (budget, timeline, regulatory, technology mandates)
-10. Is there a **preferred tech stack**, or should one be recommended?
+10. Do you have a **preferred tech stack**, or would you like recommendations based on the project requirements?
 
-> **Default Tech Stack:** Unless the user specifies otherwise, assume the following as the default starting tech stack:
-> - **Backend:** Laravel (PHP)
-> - **Frontend:** Nuxt (Vue.js framework with SSR)
-> - **UI Reactivity:** Vue 3 (Composition API)
-> - **State Management:** Pinia
-> - **Database:** MySQL
+> **Tech Stack Selection:** If the user doesn't specify a preferred tech stack, recommend one based on the project requirements gathered so far. Consider:
+> - **Project type and complexity** (web app, mobile, desktop, API, etc.)
+> - **Performance requirements** (real-time, high-throughput, etc.)
+> - **Team expertise** (if mentioned)
+> - **Scalability needs** (current and future)
+> - **Integration requirements** (existing systems, third-party services)
+> - **Budget and timeline constraints**
 >
-> However, always evaluate whether this default stack is the best fit for the project's specific requirements. If a different technology would be significantly more suitable (e.g., real-time heavy apps may benefit from Node.js/Socket.io, or a project needing graph queries may benefit from GraphQL + PostgreSQL), recommend the better-suited alternative with clear justification while keeping the default stack as the baseline recommendation.
+> Present 2-3 suitable tech stack options with clear justifications for each choice, highlighting the pros and cons. Let the user choose or provide guidance on which factors should drive the decision.
 
 ## Phase 2: Iterative Research & Deep Dive
 
@@ -71,7 +72,8 @@ After collecting initial answers, perform the following loop:
    - Similar existing products or solutions in the market
    - Common features expected in this type of application
    - Potential technical challenges and risks
-   - Best practices for the identified domain
+   - Technology patterns and architectural approaches suitable for the project type
+   - Best practices for the identified domain and scale
 
 2. **Present Findings:** Share a brief summary of your research findings with the user.
 
@@ -138,7 +140,7 @@ After all gaps are resolved, compile and present the final, consolidated version
    - Target audience
    - Expected scale
 
-2. **Tech Stack:** Present the confirmed tech stack with brief justification for each choice. Highlight any deviations from the default stack and why.
+2. **Tech Stack:** Present the confirmed tech stack with brief justification for each choice, explaining why each technology was selected based on the project requirements.
 
 3. **Feature List:** Present a prioritized, numbered list of all features:
    - Grouped by priority (Critical → High → Medium → Low)
@@ -205,15 +207,15 @@ Once the final requirements are approved in Phase 4, generate documentation at t
 #### `architecture.md`
 - High-level system architecture overview
 - Architecture diagram description (text-based)
-- Tech stack with justification for each choice:
-  - Frontend framework
-  - Backend framework
-  - Database(s)
-  - Caching layer
-  - Message queue (if applicable)
-  - Cloud provider / hosting
-  - CI/CD tooling
-  - Monitoring & logging
+- Tech stack with justification for each choice (adapt based on project type):
+  - Frontend technology (if applicable)
+  - Backend technology
+  - Database(s) and data storage
+  - Caching strategy (if needed)
+  - Message queue or event system (if applicable)
+  - Hosting and deployment platform
+  - Development and deployment tooling
+  - Monitoring, logging, and observability tools
 - Directory/folder structure of the project
 - Design patterns to be used
 - Third-party services and integrations (high-level overview; detailed doc is conditional)
@@ -249,13 +251,14 @@ Each feature file must include:
 ---
 
 #### `deployment/deployment.md`
-- Hosting environment
-- Container strategy (Docker, Kubernetes, etc.)
-- CI/CD pipeline overview
-- Environment setup (dev, staging, production)
-- Infrastructure as code notes
-- Backup and disaster recovery plan
-- Monitoring and alerting setup
+- Hosting environment and infrastructure requirements
+- Containerization and orchestration strategy (if applicable)
+- CI/CD pipeline and automation approach
+- Environment setup and configuration management
+- Infrastructure provisioning and management approach
+- Backup, disaster recovery, and business continuity plan
+- Monitoring, alerting, and observability setup
+- Security and compliance considerations for deployment
 
 ---
 

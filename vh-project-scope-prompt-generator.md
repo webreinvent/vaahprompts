@@ -20,33 +20,33 @@ Before any analysis begins, the AI **must** resolve the actual project root fold
 2. **Check conversation context** — If the user has already mentioned or provided the path in the current conversation.
 3. **Ask the user** — If the path is not available from memory or context, explicitly ask: *"What is the absolute path to your project root folder?"*
 
-Once resolved, use the **actual absolute path** (e.g., `/Volumes/Data/Projects/webreinvent-learn`) everywhere in the generated prompt — never leave `<project-root-folder>` as a placeholder. All file paths, folder references, and analysis instructions in the generated `prompt-project-scope-init.md` must contain the real, resolved path.
+Once resolved, use the **actual absolute path** (e.g., `/path/to/discovered-project`) everywhere in the generated prompt — never leave `<project-root-folder>` as a placeholder. All file paths, folder references, and analysis instructions in the generated `prompt-project-scope-init.md` must contain the real, resolved path.
 
 # Task
 
-## Phase Status Tracker
+## Steps Status Tracker
 
-At the start of every response, display the current status of all phases using the format below. Update the statuses as work progresses.
+At the start of every response, display the current status of all steps using the format below. Update the statuses as work progresses.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ Phase 1: Project Discovery & Analysis     → ⬜ / 🔄 / ✅   │
-│ Phase 2: Scope & Stack Comprehension      → ⬜ / 🔄 / ✅   │
-│ Phase 3: Progress & Status Assessment     → ⬜ / 🔄 / ✅   │
-│ Phase 4: Gap Identification               → ⬜ / 🔄 / ✅   │
-│ Phase 5: Prompt Generation                → ⬜ / 🔄 / ✅   │
-│ Phase 6: Validation & Confirmation        → ⬜ / 🔄 / ✅   │
+│ Step 1: Project Discovery & Analysis      → ⬜ / 🔄 / ✅   │
+│ Step 2: Scope & Stack Comprehension       → ⬜ / 🔄 / ✅   │
+│ Step 3: Progress & Status Assessment      → ⬜ / 🔄 / ✅   │
+│ Step 4: Gap Identification                → ⬜ / 🔄 / ✅   │
+│ Step 5: Prompt Generation                 → ⬜ / 🔄 / ✅   │
+│ Step 6: Validation & Confirmation         → ⬜ / 🔄 / ✅   │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 **Rules:**
-- Only one phase can be **In Progress** at a time.
-- A phase is marked **Completed** only when all its steps are fully done.
+- Only one step can be **In Progress** at a time.
+- A step is marked **Completed** only when all its sub-steps are fully done.
 - Always show this tracker at the **top of every response**.
 
 ---
 
-## Phase 1: Project Discovery & Analysis
+## Step 1: Project Discovery & Analysis
 
 Perform a thorough analysis of the project to understand its current state.
 
@@ -54,20 +54,22 @@ Perform a thorough analysis of the project to understand its current state.
 
 1. **Resolve the project root folder path** using the priority order defined above (AI memory → conversation context → ask user). Store this resolved path as `{project_root}` and use it for all subsequent steps.
 2. Scan the project directory structure to identify:
-   - Documentation folder (`docs/`)
-   - Source code folders (backend, frontend, config, tests, etc.)
-   - Progress tracking folder (`ai-milestones-and-tasks/`)
-   - AI prompts folder (`ai-prompts/`)
-   - Any other relevant folders (docker, scripts, etc.)
+   - Documentation folders (scan for common patterns: `docs/`, `documentation/`, `wiki/`, README files)
+   - Source code folders (scan for patterns: `src/`, `app/`, `lib/`, `components/`, `pages/`, etc.)
+   - Progress tracking folders (scan for: `ai-milestones-and-tasks/`, `milestones/`, `.tasks/`, etc.)
+   - AI prompts folders (scan for: `ai-prompts/`, `.prompts/`, `prompts/`, etc.)
+   - Configuration files (package.json, composer.json, requirements.txt, Gemfile, etc.)
+   - Any other relevant folders discovered during scan
 3. Present the discovered structure to the user for confirmation.
 
 ### Step 1.2 — Analyze Documentation
 
-Read and analyze all files in `{project_root}/docs/`:
+Read and analyze all files in the discovered documentation folder(s):
 
-1. **Core docs:** `README.md`, `architecture.md`, `roadmap.md`, `glossary.md`, `deployment/deployment.md`
-2. **Feature docs:** All files in `docs/features/` — extract feature names, priorities, target phases, acceptance criteria, and dependencies.
-3. **Conditional docs:** `security/security.md`, `data-models/data-models.md`, `integrations/integrations.md`, `testing/testing-strategy.md`, `api/api-design.md`, and any others present.
+1. **Core documentation:** Look for project overview, architecture, roadmap, glossary, deployment guides
+2. **Feature documentation:** Scan for feature specifications, requirements, acceptance criteria, and dependencies
+3. **Technical documentation:** Look for security models, data models, API designs, testing strategies, integration guides
+4. **Process documentation:** Find development workflows, coding standards, deployment processes
 
 Extract and summarize:
 - Project name, description, and objectives
@@ -86,11 +88,12 @@ Extract and summarize:
 
 Scan the actual source code to understand implementation status:
 
-1. **Backend:** Check for existing Laravel files (models, controllers, services, migrations, routes, middleware, policies, etc.)
-2. **Frontend:** Check for Vue components, pages, layouts, composables, stores, etc.
-3. **Configuration:** Check `composer.json`, `package.json`, `.env.example`, `vite.config.js`, etc.
-4. **Tests:** Check for existing test files and coverage.
-5. **Docker/Infrastructure:** Check for Docker files, deployment configs, etc.
+1. **Backend/Server-side:** Identify framework and examine relevant files (models, controllers, services, routes, middleware, etc.)
+2. **Frontend/Client-side:** Identify framework and examine components, pages, layouts, stores, composables, etc.
+3. **Configuration:** Examine dependency files, environment configs, build configs, etc.
+4. **Tests:** Check for existing test files, coverage reports, and testing framework setup
+5. **Infrastructure:** Check for containerization, deployment configs, CI/CD files, etc.
+6. **Database:** Look for schema definitions, migrations, seeders, ORM configurations
 
 Determine:
 - What has been implemented vs. what is still planned
@@ -100,7 +103,7 @@ Determine:
 
 ### Step 1.4 — Analyze Progress Tracking
 
-Read all files in `{project_root}/ai-milestones-and-tasks/`:
+Read all files in the discovered progress tracking folder(s):
 
 1. Identify current milestone/phase of development
 2. Extract completed tasks, in-progress tasks, and pending tasks
@@ -109,7 +112,7 @@ Read all files in `{project_root}/ai-milestones-and-tasks/`:
 
 ---
 
-## Phase 2: Scope & Stack Comprehension
+## Step 2: Scope & Stack Comprehension
 
 ### Step 2.1 — Tech Stack Deep Dive
 
@@ -117,7 +120,7 @@ For each technology in the documented tech stack:
 
 1. **Search official documentation** for the specific version being used
 2. **Identify best practices** relevant to the project's architecture
-3. **Check compatibility** between stack components (e.g., Laravel + Inertia.js + Vue 3 version compatibility)
+3. **Check compatibility** between discovered stack components and their versions
 4. **Note any deprecations or breaking changes** in recent versions that could affect the project
 
 ### Step 2.2 — Architecture Validation
@@ -138,7 +141,7 @@ For each documented feature:
 
 ---
 
-## Phase 3: Progress & Status Assessment
+## Step 3: Progress & Status Assessment
 
 ### Step 3.1 — Development Status Matrix
 
@@ -164,7 +167,7 @@ For each documented integration:
 
 ---
 
-## Phase 4: Gap Identification
+## Step 4: Gap Identification
 
 ### Step 4.1 — Documentation Gaps
 
@@ -187,30 +190,30 @@ Identify:
 ### Step 4.3 — Process Gaps
 
 Identify:
-- Missing or incomplete milestone tracking in `{project_root}/ai-milestones-and-tasks/`
+- Missing or incomplete milestone tracking in discovered progress tracking folders
 - No CI/CD pipeline if documented as needed
 - Missing deployment scripts if documented as needed
 - Security measures documented but not implemented
 
 ---
 
-## Phase 5: Prompt Generation
+## Step 5: Prompt Generation
 
 Using all gathered information, generate the project-specific scope initialization prompt at:
 
 ```
-{project_root}/ai-prompts/prompt-project-scope-init.md
+{project_root}/{discovered-prompts-folder}/prompt-project-scope-init.md
 ```
 
-> **Important:** In the generated prompt file, replace **all** path references with the actual resolved `{project_root}` value. For example, if `{project_root}` is `/Volumes/Data/Projects/webreinvent-learn`, then paths in the generated prompt should read `/Volumes/Data/Projects/webreinvent-learn/docs/`, not `<project-root-folder>/docs/`.
+> **Important:** In the generated prompt file, replace **all** path references with the actual resolved `{project_root}` value and discovered folder structures. All paths in the generated prompt should use the real, resolved absolute paths discovered during analysis.
 
 ### Generated Prompt Design Principles
 
 The generated `prompt-project-scope-init.md` must follow these principles:
 
-1. **Folder references only** — Reference important **folders** the AI must read and analyse. Never list specific file names, as files can change over time. For example, reference `{project_root}/docs/features/` not individual feature files.
-2. **Basic overview only** — Provide a concise project overview (name, description, tech stack summary, user roles, key decisions, constraints). Keep it brief — just enough for the AI to understand the project identity.
-3. **Direct to folders for depth** — The prompt should direct the AI to read the relevant folders for detailed understanding rather than duplicating that information in the prompt itself.
+1. **Folder references only** — Reference important **discovered folders** the AI must read and analyse. Never list specific file names, as files can change over time. Reference the actual discovered folder paths.
+2. **Basic overview only** — Provide a concise project overview based on discovered information (name, description, tech stack summary, user roles, key decisions, constraints). Keep it brief — just enough for the AI to understand the project identity.
+3. **Direct to folders for depth** — The prompt should direct the AI to read the discovered relevant folders for detailed understanding rather than duplicating that information in the prompt itself.
 
 ### Generated Prompt Structure
 
@@ -236,30 +239,30 @@ List only the **important folders** the AI must read and analyse, with a brief d
 
 | Folder | Purpose | What to Learn |
 |--------|---------|---------------|
-| `{project_root}/docs/` | Project documentation | Full project scope — architecture, features, roadmap, data models, security, integrations, testing, deployment, glossary |
-| `{project_root}/ai-milestones-and-tasks/` | Progress tracking | Current development status — completed, in-progress, and pending tasks; blockers; deviations from roadmap |
-| `{project_root}/ai-prompts/` | AI prompt files | Other AI prompts used in the project; understand the AI workflow |
-| `{project_root}/` (root) | Codebase | Actual source code — scan to understand what is implemented vs. planned; check dependency files, configs, and project structure |
+| `{discovered-docs-folder}` | Project documentation | Full project scope discovered in documentation analysis |
+| `{discovered-progress-folder}` | Progress tracking | Current development status discovered during progress analysis |
+| `{discovered-prompts-folder}` | AI prompt files | Other AI prompts used in the project; understand the AI workflow |
+| `{project_root}` (root) | Codebase | Actual source code — scan to understand what is implemented vs. planned; check dependency files, configs, and project structure |
 
 #### Section 4: Analysis Instructions
 
 The generated prompt must instruct the AI to perform these steps sequentially:
 
-1. **Analyse `{project_root}/docs/` folder**
-   - Read all files and subfolders within docs
+1. **Analyse discovered documentation folder(s)**
+   - Read all files and subfolders within the discovered documentation structure
    - Build a mental model of the project scope, features, architecture, and conventions
 
 2. **Search tech stack official documentation**
-   - For each technology listed in the tech stack, look up official docs
+   - For each technology discovered in the tech stack, look up official docs
    - Learn current best practices, version-specific guidance, and compatibility notes
 
-3. **Analyse current codebase at `{project_root}/`**
-   - Scan source code directories to understand implementation status
+3. **Analyse current codebase at project root**
+   - Scan discovered source code directories to understand implementation status
    - Map implemented code to documented features
    - Assess adherence to documented patterns and conventions
 
-4. **Analyse `{project_root}/ai-milestones-and-tasks/` folder**
-   - Read all files to understand current development progress
+4. **Analyse discovered progress tracking folder(s)**
+   - Read all files in progress tracking directories to understand current development progress
    - Identify completed, in-progress, and pending work
    - Note blockers or deferred items
 
@@ -274,7 +277,7 @@ The generated prompt must instruct the AI to perform these steps sequentially:
    - Provide a recommended answer/action for each question
    - Categorize as Critical / Important / Minor
 
-7. **Update required files in `{project_root}/docs/` and `{project_root}/ai-milestones-and-tasks/`**
+7. **Update required files in discovered documentation and progress tracking folders**
    - Update docs that are outdated or inconsistent
    - Update milestone/task files to reflect current status
    - Create missing documentation where needed
@@ -298,11 +301,11 @@ The generated prompt must instruct the AI to perform these steps sequentially:
 - Always ask before making significant changes
 - Prioritize MVP features over future-phase features
 - Follow existing code conventions and patterns
-- Cross-reference all changes against documentation in `{project_root}/docs/`
+- Cross-reference all changes against discovered project documentation
 
 ---
 
-## Phase 6: Validation & Confirmation
+## Step 6: Validation & Confirmation
 
 ### Step 6.1 — Review Generated Prompt
 
@@ -351,8 +354,8 @@ Store in AI memory:
 
 # Notes
 
-- This meta-prompt is **project-agnostic** — it works for any project that follows the documentation structure established by `vh-project-plan.md`.
+- This meta-prompt is **project-agnostic** — it works for any software project by dynamically discovering the project structure and adapting to the specific organization and tech stack.
 - The generated prompt is **project-specific** — it contains hardcoded project context for maximum AI effectiveness.
 - Regenerate the scope prompt whenever there are significant project changes (new phase, major architecture shift, tech stack change).
-- The `ai-milestones-and-tasks/` folder should be maintained throughout development as the source of truth for progress tracking.
+- The discovered progress tracking folder(s) should be maintained throughout development as the source of truth for progress tracking.
 - `{project_root}` is a variable notation used only within this meta-prompt. The generated `prompt-project-scope-init.md` must always contain the **actual resolved absolute path** — never the `{project_root}` variable or `<project-root-folder>` placeholder.

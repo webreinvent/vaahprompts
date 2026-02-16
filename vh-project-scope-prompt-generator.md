@@ -10,7 +10,7 @@ Analyze an existing software project's structure, documentation, codebase, and p
 
 This meta-prompt is used **after** initial project documentation has been generated (e.g., via `vh-project-plan.md`) and the project has entered active development. The goal is to produce a reusable AI prompt (`prompt-project-scope-init.md`) that serves as the "onboarding document" for any AI assistant working on the project — ensuring it deeply understands the project before taking any action.
 
-The generated prompt file is placed at `{project_root}/ai-prompts/prompt-project-scope-init.md`, where `{project_root}` is the **actual absolute path** resolved during Phase 1.
+The generated prompt file is placed at `{project_root}/ai-prompts/prompt-project-scope-init.md`, where `{project_root}` is the **actual absolute path** resolved during Step 1.
 
 ## Project Root Path Resolution
 
@@ -56,7 +56,7 @@ Perform a thorough analysis of the project to understand its current state.
 2. Scan the project directory structure to identify:
    - Documentation folders (scan for common patterns: `docs/`, `documentation/`, `wiki/`, README files)
    - Source code folders (scan for patterns: `src/`, `app/`, `lib/`, `components/`, `pages/`, etc.)
-   - Progress tracking folders (scan for: `ai-milestones-and-tasks/`, `milestones/`, `.tasks/`, etc.)
+   - Progress tracking folders (scan for: `ai-milestones-and-tasks/`, `milestones/`, `tasks/`, etc.)
    - AI prompts folders (scan for: `ai-prompts/`, `.prompts/`, `prompts/`, etc.)
    - Configuration files (package.json, composer.json, requirements.txt, Gemfile, etc.)
    - Any other relevant folders discovered during scan
@@ -74,7 +74,7 @@ Read and analyze all files in the discovered documentation folder(s):
 Extract and summarize:
 - Project name, description, and objectives
 - Target audience and user roles
-- Complete feature list with priorities and phases
+- Complete feature list with priorities and milestone assignments
 - Tech stack decisions and justifications
 - Architectural patterns and design decisions
 - Deployment strategy
@@ -105,7 +105,7 @@ Determine:
 
 Read all files in the discovered progress tracking folder(s):
 
-1. Identify current milestone/phase of development
+1. Identify current milestone and task status
 2. Extract completed tasks, in-progress tasks, and pending tasks
 3. Understand blockers or deferred items
 4. Note any deviations from the original roadmap
@@ -147,7 +147,7 @@ For each documented feature:
 
 Create a status matrix for all documented features:
 
-| Feature | Priority | Phase | Code Status | Tests | Notes |
+| Feature | Priority | Milestone | Code Status | Tests | Notes |
 |---------|----------|-------|-------------|-------|-------|
 | Feature-001 | Critical | MVP | ✅ Done / 🔄 Partial / ⬜ Not Started | ✅/⬜ | ... |
 
@@ -180,7 +180,7 @@ Identify areas where documentation is:
 ### Step 4.2 — Implementation Gaps
 
 Identify:
-- Features documented but not yet implemented (expected if in future phases)
+- Features documented but not yet implemented (expected in future milestones)
 - Features partially implemented with missing components
 - Code that exists without documentation
 - Missing tests for implemented features
@@ -190,7 +190,7 @@ Identify:
 ### Step 4.3 — Process Gaps
 
 Identify:
-- Missing or incomplete milestone tracking in discovered progress tracking folders
+- Missing or incomplete milestone and task tracking in discovered progress tracking folders
 - No CI/CD pipeline if documented as needed
 - Missing deployment scripts if documented as needed
 - Security measures documented but not implemented
@@ -279,17 +279,17 @@ The generated prompt must instruct the AI to perform these steps sequentially:
 
 7. **Update required files in discovered documentation and progress tracking folders**
    - Update docs that are outdated or inconsistent
-   - Update milestone/task files to reflect current status
+   - Update milestone and task files to reflect current status
    - Create missing documentation where needed
    - Always ask before making significant changes
 
 8. **Update AI memory**
    - Store project context, current status, and key decisions
    - Save tech stack, architecture, and conventions
-   - Record current phase and progress
+   - Record current milestone and task progress
 
-#### Section 5: Phase Status Tracker
-- Include a phase tracker in the generated prompt for the AI to display progress across all 8 analysis steps
+#### Section 5: Steps Status Tracker
+- Include a steps tracker in the generated prompt for the AI to display progress across all 8 analysis steps
 
 #### Section 6: Output Format
 - Specify Markdown formatting rules
@@ -299,7 +299,7 @@ The generated prompt must instruct the AI to perform these steps sequentially:
 #### Section 7: Rules & Constraints
 - Never make assumptions without verification — read the folders first
 - Always ask before making significant changes
-- Prioritize MVP features over future-phase features
+- Prioritize MVP features over future-milestone features
 - Follow existing code conventions and patterns
 - Cross-reference all changes against discovered project documentation
 
@@ -356,6 +356,6 @@ Store in AI memory:
 
 - This meta-prompt is **project-agnostic** — it works for any software project by dynamically discovering the project structure and adapting to the specific organization and tech stack.
 - The generated prompt is **project-specific** — it contains hardcoded project context for maximum AI effectiveness.
-- Regenerate the scope prompt whenever there are significant project changes (new phase, major architecture shift, tech stack change).
+- Regenerate the scope prompt whenever there are significant project changes (new milestone, major architecture shift, tech stack change).
 - The discovered progress tracking folder(s) should be maintained throughout development as the source of truth for progress tracking.
 - `{project_root}` is a variable notation used only within this meta-prompt. The generated `prompt-project-scope-init.md` must always contain the **actual resolved absolute path** — never the `{project_root}` variable or `<project-root-folder>` placeholder.

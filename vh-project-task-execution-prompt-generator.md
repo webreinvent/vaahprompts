@@ -152,6 +152,19 @@ auto_execution_mode: 3
 
 # [PROJECT_NAME] Task Execution Prompt
 
+## 🔴 CRITICAL: Read This File Every Time
+
+**DO NOT cache or memorize this prompt.** You MUST read the full content of this file (`<project-root>/ai-prompts/prompt-task-execution.md`) every single time before executing any task. This prompt file is frequently updated with:
+- New workflow steps and procedures
+- Updated technology versions and patterns
+- Latest architectural decisions
+- Current project conventions and best practices
+- Recent learnings and gotchas
+
+**Always use the latest version from disk.** Relying on cached or memorized versions will lead to outdated workflows, incorrect patterns, and missed critical instructions.
+
+---
+
 [Purpose and project overview discovered from analysis]
 
 ## Tech Stack and Documentation Links
